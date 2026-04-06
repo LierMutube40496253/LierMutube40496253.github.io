@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>When Technology Changed Crime — SF Crime Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── DESIGN SYSTEM ─────────────────────────────────────────── */
+    :root {
+      --ink:       #1a1612;
+      --paper:     #f5f0e8;
+      --paper-alt: #ede7d9;
+      --rule:      #c8bfad;
+      --faint:     #e4ddd0;
+
+      /* Crime colors — used consistently in text AND charts */
+      --blue:      #1d6fa4;
+      --orange:    #c85a17;
+      --purple:    #7b3fa0;
+
+      --accent:    #b5271a;   /* pull-quote red / drop-cap */
+      --caption:   #6b6055;
+
+      --col-max:   740px;
+      --col-wide:  980px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── MASTHEAD ───────────────────────────────────────────────── */
+    .masthead {
+      border-bottom: 3px double var(--ink);
+      padding: 1.2rem 2rem 0.8rem;
+      text-align: center;
+    }
+    .masthead .pub-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--caption);
+    }
+    .masthead .pub-rule {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0.4rem 0;
+    }
+    .masthead .pub-rule hr { flex: 1; border: none; border-top: 1px solid var(--ink); }
+    .masthead .pub-rule span {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+    }
+    .masthead .pub-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--caption);
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    .hero {
+      max-width: var(--col-wide);
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero .kicker {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      max-width: 820px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero .deck {
+      margin-top: 1.4rem;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      max-width: 600px;
+      color: #3a3028;
+      font-weight: 300;
+    }
+    .hero-meta {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--caption);
+      text-transform: uppercase;
+    }
+    .hero-meta .dot { color: var(--rule); }
+
+    /* ─── PROSE BODY ─────────────────────────────────────────────── */
+    .story {
+      max-width: var(--col-max);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Drop cap on opening paragraph */
+    .intro::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 5.2rem;
+      font-weight: 900;
+      color: var(--accent);
+      float: left;
+      line-height: 0.75;
+      margin: 0.12em 0.08em 0 0;
+      padding-top: 0.06em;
+    }
+
+    p { margin-bottom: 1.4rem; }
+
+    /* ─── CHAPTER HEADERS ────────────────────────────────────────── */
+    .chapter-break {
+      max-width: var(--col-wide);
+      margin: 4rem auto 0;
+      padding: 0 2rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      border-top: 3px solid var(--ink);
+      padding-top: 1.2rem;
+    }
+    .chapter-break .ch-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--paper-alt);
+      -webkit-text-stroke: 2px var(--ink);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .chapter-break .ch-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* ─── SECTION HEADERS within chapters ───────────────────────── */
+    h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 2.5rem 0 0.8rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    /* Crime-coloured underline per section */
+    h3.mv  { border-color: var(--blue);   color: var(--blue);   }
+    h3.lt  { border-color: var(--orange); color: var(--orange); }
+    h3.sp  { border-color: var(--purple); color: var(--purple); }
+
+    /* ─── PULL QUOTE ─────────────────────────────────────────────── */
+    .pull-quote {
+      max-width: var(--col-wide);
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+    .pull-quote blockquote {
+      border-left: 5px solid var(--accent);
+      padding: 0.6rem 0 0.6rem 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--accent);
+      max-width: 660px;
+    }
+
+    /* ─── COLOUR LEGEND INLINE ───────────────────────────────────── */
+    .color-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin: 1.5rem 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+    }
+    .color-key .k {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .color-key .swatch {
+      width: 28px;
+      height: 4px;
+      border-radius: 2px;
+    }
+    .sw-blue   { background: var(--blue);   }
+    .sw-orange { background: var(--orange); }
+    .sw-purple { background: var(--purple); }
+
+    /* ─── FIGURE WRAPPERS ────────────────────────────────────────── */
+    .figure-block {
+      margin: 3rem 0;
+      background: var(--paper-alt);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+    }
+    .figure-block .fig-inner {
+      padding: 1.5rem;
+    }
+    /* Static image figure */
+    .figure-block img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* iframe-embedded interactive figures */
+    .figure-block iframe {
+      width: 100%;
+      border: none;
+      display: block;
+      background: transparent;
+    }
+    /* placeholder when the real viz file isn't present yet */
+    .fig-placeholder {
+      background: var(--faint);
+      border: 2px dashed var(--rule);
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 3rem 1rem;
+      color: var(--caption);
+    }
+    .fig-placeholder .ph-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .fig-placeholder .ph-filename {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--ink);
+      background: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      border: 1px solid var(--rule);
+    }
+
+    /* Figure caption */
+    .fig-caption {
+      padding: 0.8rem 1.5rem 1.2rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--caption);
+    }
+    .fig-caption strong {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Wide figures break out of the story column */
+    .figure-wide {
+      max-width: var(--col-wide);
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 2rem;
+    }
+    .figure-story {
+      /* stays inside story column; no extra wrapper needed */
+    }
+
+    /* ─── ANNOTATION CALLOUT ─────────────────────────────────────── */
+    .annotation {
+      background: white;
+      border-left: 3px solid var(--ink);
+      padding: 0.8rem 1rem;
+      margin: 2rem 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .annotation .ann-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--caption);
+      margin-bottom: 0.3rem;
+    }
+
+    /* ─── REFERENCES ─────────────────────────────────────────────── */
+    .references {
+      max-width: var(--col-max);
+      margin: 5rem auto 0;
+      padding: 2rem 2rem 4rem;
+      border-top: 3px double var(--rule);
+    }
+    .references h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--caption);
+      margin-bottom: 1.2rem;
+    }
+    .references ol {
+      padding-left: 1.4rem;
+    }
+    .references li {
+      font-size: 0.82rem;
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
+      color: var(--caption);
+    }
+    .references a { color: var(--blue); text-decoration: none; }
+    .references a:hover { text-decoration: underline; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .hero h1 { font-size: 2rem; }
+      .chapter-break .ch-num { font-size: 2rem; }
+      .pull-quote blockquote { font-size: 1.2rem; }
+      .color-key { gap: 0.8rem; }
+    }
+
+    /* ─── PAGE-LOAD FADE IN ──────────────────────────────────────── */
+    @keyframes fadein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .hero, .story, .chapter-break, .figure-wide, .references {
+      animation: fadein 0.7s ease both;
+    }
+    .chapter-break { animation-delay: 0.05s; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MASTHEAD
+══════════════════════════════════════════════════════════════ -->
+<header class="masthead">
+  <div class="pub-name">SF Crime · Data Story · Week 8</div>
+  <div class="pub-rule">
+    <hr />
+    <span>San Francisco Police Incident Reports · 2003–2024</span>
+    <hr />
+  </div>
+  <div class="pub-meta">Data source: data.sfgov.org &nbsp;·&nbsp; Analysis: Python / Plotly / Folium</div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <p class="kicker">Technology &amp; Crime &nbsp;·&nbsp; Twenty Years of Data</p>
+  <h1>When the Machine<br /><em>Changed the Crime</em></h1>
+  <p class="deck">
+    Three of the sharpest shifts in San Francisco crime over two decades
+    were not driven by policing. They were driven by technology — an engine
+    chip, a smartphone, a law aimed at a website.
+  </p>
+  <div class="hero-meta">
+    <span>2003 – 2024</span>
+    <span class="dot">·</span>
+    <span>SFPD Incident Reports</span>
+    <span class="dot">·</span>
+    <span>~3 million incidents</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     INTRODUCTION
+══════════════════════════════════════════════════════════════ -->
+<main>
+<section class="story" style="padding-top: 3rem;">
+  <p class="intro">
+    This page analyses crime data from San Francisco covering the period
+    between 2003 and 2024. The dataset is based on SFPD police incident
+    reports and contains detailed information on each recorded incident:
+    crime type, location, date, time, and more. It is worth noting upfront
+    that this data reflects reported incidents only, meaning that changes
+    in enforcement priorities or reporting behaviour can look exactly like
+    changes in crime itself — and that distinction will matter a great deal
+    by the end of this story.
+  </p>
+  <p>
+    After working through this data, I noticed that three of the sharpest
+    shifts across two decades share something unexpected: they appear to be
+    driven by technological change. The crimes I will focus on are
+    <strong style="color: var(--blue);">motor vehicle theft</strong>,
+    <strong style="color: var(--orange);">larceny theft</strong>, and
+    <strong style="color: var(--purple);">street prostitution</strong>.
+    In the final chapter I expand the view to show more crime types
+    alongside other technology-related events, so you can look for
+    connections I may have missed.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CHAPTER 1
+══════════════════════════════════════════════════════════════ -->
+<div class="chapter-break">
+  <span class="ch-num">01</span>
+  <span class="ch-title">Three Crimes, Three Technologies</span>
+</div>
+
+<!-- FIGURE 1 — static chart, full-width -->
+<div class="figure-wide" style="margin-top: 2.5rem;">
+  <div class="figure-block">
+    <div class="fig-inner">
+      <!--
+        REPLACE the placeholder below with your actual exported chart.
+        Export from Python with:
+          fig.savefig("fig1_three_crimes.png", dpi=150, bbox_inches='tight')
+        Then swap the placeholder div for:
+          <img src="fig1_three_crimes.png" alt="Annual incident counts for motor vehicle theft, larceny theft, and street prostitution in San Francisco 2003–2024" />
+      -->
+      <div class="fig-placeholder" style="min-height: 340px;">
+        <span class="ph-label">Static Chart — Figure 1</span>
+        <span class="ph-filename">fig1_three_crimes.png</span>
+        <span style="font-size:0.8rem; text-align:center; max-width:400px;">
+          Export your three-panel matplotlib figure here.<br/>
+          Use <code>plt.savefig("fig1_three_crimes.png", dpi=150, bbox_inches='tight')</code>
+        </span>
+      </div>
+    </div>
+    <div class="fig-caption">
+      <strong>Figure 1 — Annual incident counts, 2003–2024</strong>
+      Annual incident counts for
+      <span style="color:var(--blue); font-weight:600;">motor vehicle theft (blue)</span>,
+      <span style="color:var(--orange); font-weight:600;">larceny theft (orange)</span>, and
+      <span style="color:var(--purple); font-weight:600;">street prostitution (purple)</span>
+      in San Francisco. Dashed vertical lines mark the technology moment associated with
+      each shift. Each panel tells a structurally different story: a cliff that begins
+      in 2005, a mountain that peaks around 2017, and a near-total disappearance after 2018.
+      Notice that the cliff and the mountain are roughly contemporaneous with one another —
+      the same technological era that closed one door opened another.
+    </div>
+  </div>
+</div>
+
+<section class="story" style="padding-top: 1rem;">
+  <div class="color-key">
+    <span class="k"><span class="swatch sw-blue"></span> Motor vehicle theft</span>
+    <span class="k"><span class="swatch sw-orange"></span> Larceny theft</span>
+    <span class="k"><span class="swatch sw-purple"></span> Street prostitution</span>
+  </div>
+
+  <h3 class="mv">Motor Vehicle Theft</h3>
+  <p>
+    Even though engine immobilizers were invented well before 2005, they
+    were not standardised in commercial vehicles until that year. As the data
+    shows, a clear drop begins around 2005–2006, when California enforced a
+    law requiring all new cars to include this technology. An immobilizer
+    prevents the engine from starting without the correct electronic key,
+    making the old technique of hotwiring essentially obsolete.
+  </p>
+  <p>
+    What is interesting is that while the law was the direct trigger, without
+    the prior invention and standardisation of the technology it would never
+    have been possible. It is also worth noting that some of the remaining
+    thefts are likely older vehicles without this system installed. Depending
+    on whether accessories like radios or wheels are counted in this category,
+    newer security measures may have also contributed further to the decline.
+  </p>
+
+  <h3 class="lt">Larceny Theft</h3>
+  <p>
+    With larceny theft, roughly the opposite happened. The standardisation of
+    the smartphone meant that people were constantly carrying a high-value
+    device that was easy to steal, small enough to pocket, and at the time had
+    limited tracking or resale prevention measures. As a result, larceny theft
+    increased dramatically after smartphones crossed 50% penetration in the US
+    around 2011–2012.
+  </p>
+  <p>
+    Larceny covers a broader range of thefts — wallets, purses, laptops — but
+    given the scale of the rise and how rapidly smartphones entered everyday
+    life, it is reasonable to argue they played a significant role. Over time
+    some countermeasures were applied, such as Apple's Activation Lock with
+    iOS 7 in 2013, though users found workarounds fairly regularly. Then
+    COVID-19 in 2020 emptied the streets entirely, and the count dropped
+    sharply as there were simply fewer people outside to steal from.
+  </p>
+
+  <h3 class="sp">Street Prostitution</h3>
+  <p>
+    With street prostitution, the drop begins earlier than the enforcement
+    laws often cited. Around 2011, a shift in online content consumption
+    meant that free platforms began to dominate, with 80–90% of users
+    accessing content at no cost. As pornography became more accessible,
+    the demand for paid street services appears to have declined — the early
+    drop visible from around that period is consistent with this timing.
+  </p>
+</section>
+
+<!-- Pull quote -->
+<div class="pull-quote">
+  <blockquote>
+    "The data does not show a crime going away. It shows a crime
+    becoming invisible."
+  </blockquote>
+</div>
+
+<section class="story">
+  <p>
+    Then in 2018, FOSTA-SESTA was signed into law, targeting platforms that
+    hosted sex work advertising. The effect on recorded street prostitution
+    was dramatic: incidents fell to near zero and have remained there since.
+    The critical point is that this almost certainly does not mean the activity
+    itself disappeared. What disappeared is what the police could see and count.
+    It is the same lesson that applies across this entire dataset: enforcement
+    practices and technology shape what appears in the data as much as they
+    shape what happens on the street.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CHAPTER 2
+══════════════════════════════════════════════════════════════ -->
+<div class="chapter-break">
+  <span class="ch-num">02</span>
+  <span class="ch-title">Does Technology Affect All Neighbourhoods Equally?</span>
+</div>
+
+<section class="story" style="padding-top: 2rem;">
+  <p>
+    The previous chapter showed how technology changed total crime numbers
+    across San Francisco. Here I want to look at whether those changes were
+    felt equally across districts — specifically whether districts with
+    different income levels saw the same shifts.
+  </p>
+</section>
+
+<!-- FIGURE 2 — choropleth map, full-width -->
+<div class="figure-wide">
+  <div class="figure-block">
+    <div class="fig-inner">
+      <!--
+        REPLACE the placeholder below with your animated choropleth.
+        Export from Plotly/Folium:
+          fig.write_html("fig2_choropleth.html", include_plotlyjs='cdn')
+        Then swap for:
+          <iframe src="fig2_choropleth.html" height="520" title="Animated choropleth of crime ratios by district"></iframe>
+      -->
+      <div class="fig-placeholder" style="min-height: 420px;">
+        <span class="ph-label">Interactive Map — Figure 2</span>
+        <span class="ph-filename">fig2_choropleth.html</span>
+        <span style="font-size:0.8rem; text-align:center; max-width:400px;">
+          Export your animated choropleth here.<br/>
+          Use <code>fig.write_html("fig2_choropleth.html", include_plotlyjs='cdn')</code>
+        </span>
+      </div>
+    </div>
+    <div class="fig-caption">
+      <strong>Figure 2 — Crime ratio per district vs. city average, animated by year</strong>
+      Each district is coloured by how its share of the crime compares to the city-wide
+      average. <strong>Red (ratio &gt; 1)</strong> means that district is overrepresented
+      relative to the rest of the city; <strong>blue (ratio &lt; 1)</strong> means the
+      opposite. Use the animation controls to watch how the ratios shift over time.
+      Pay particular attention to Mission district in the motor vehicle theft map —
+      its ratio rises even as the overall count falls, suggesting that newer cars with
+      immobilizers may have concentrated remaining theft in areas with older vehicle stock.
+    </div>
+  </div>
+</div>
+
+<section class="story">
+  <p>
+    One observation stands out in the motor vehicle theft map: even as the
+    overall count drops, the ratio for districts like Mission actually
+    increases. This could suggest that newer security technologies were
+    adopted faster in higher-income districts, where newer cars were more
+    common, while lower-income areas continued using older vehicles without
+    these protections. The technology reduced theft overall, but it may have
+    concentrated what remained in areas with less access to it.
+  </p>
+  <p>
+    For larceny, the pattern is different. Theft is more evenly spread and
+    in some cases higher in wealthier districts, which makes sense since
+    richer areas have more valuable assets and more foot traffic in public
+    spaces where opportunistic theft occurs.
+  </p>
+
+  <div class="annotation">
+    <div class="ann-label">A note on interpretation</div>
+    Technologies like smartphones and free content platforms were broadly
+    accessible across income levels, so you would not necessarily expect a
+    clear divide in those cases. But car security technology — which depends
+    on whether you own a newer vehicle — is a different story. The ratios
+    in Mission are consistent with that hypothesis, even if the data alone
+    cannot confirm it.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CHAPTER 3
+══════════════════════════════════════════════════════════════ -->
+<div class="chapter-break">
+  <span class="ch-num">03</span>
+  <span class="ch-title">Look for Yourself</span>
+</div>
+
+<section class="story" style="padding-top: 2rem;">
+  <p>
+    In this final chapter I want to hand the exploration over to you.
+    The chart below shows how several crime types have evolved over time,
+    alongside a set of technology events I believe are plausibly connected
+    to some of the trends. Click any crime in the legend to show or hide it.
+    Use the dropdown to overlay a technology event. Some events connect to
+    more than one crime line — the connections are yours to find.
+  </p>
+</section>
+
+<!-- FIGURE 3 — interactive Plotly, full-width -->
+<div class="figure-wide">
+  <div class="figure-block">
+    <div class="fig-inner">
+      <!--
+        REPLACE the placeholder below with your interactive Plotly chart.
+        Export with:
+          fig.write_html("fig3_explorer.html", include_plotlyjs='cdn')
+        Then swap for:
+          <iframe src="fig3_explorer.html" height="560" title="Interactive crime explorer with technology event overlay"></iframe>
+      -->
+      <div class="fig-placeholder" style="min-height: 460px;">
+        <span class="ph-label">Interactive Chart — Figure 3</span>
+        <span class="ph-filename">fig3_explorer.html</span>
+        <span style="font-size:0.8rem; text-align:center; max-width:400px;">
+          Export your interactive multi-crime explorer here.<br/>
+          Use <code>fig.write_html("fig3_explorer.html", include_plotlyjs='cdn')</code>
+        </span>
+      </div>
+    </div>
+    <div class="fig-caption">
+      <strong>Figure 3 — Eight crime categories, 2003–2022, with technology overlays</strong>
+      Annual incident counts for eight crime categories. Click any crime in the legend
+      to show or hide it. Use the dropdown to overlay a technology event on the timeline.
+      The overlays I have included are the ones I found most compelling, but there are
+      certainly others — and you may think of events I have missed entirely. That is
+      the point of making this interactive rather than static: the author's interpretation
+      is a starting point, not a conclusion.
+    </div>
+  </div>
+</div>
+
+<section class="story">
+  <p>
+    My own reflection: technology can have a significant and direct impact
+    on crime, in both directions. Some inventions create new opportunities
+    while others close them off, and both effects tend to persist until some
+    kind of response catches up — whether that is a security measure, a law,
+    or something as blunt as a pandemic.
+  </p>
+  <p>
+    In a world increasingly shaped by large technology companies whose value
+    depends on new products, it is worth asking whether these companies should
+    be required to consider the potential impact of their inventions on crime
+    before they are standardised. Is that even measurable in advance?
+    Looking at past events and their effects, perhaps it is possible to make
+    some predictions. Artificial intelligence is an obvious case. When
+    powerful tools are made widely accessible, they can be used for
+    investigation and prevention just as easily as they can be used for harm.
+    Have the people building these systems thought seriously about that?
+    Or are they focused on the revenue?
+  </p>
+  <p>
+    I do not have a clean answer to that. But I think looking at what
+    technology has already done to crime in the past gives you enough to
+    form your own.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     REFERENCES
+══════════════════════════════════════════════════════════════ -->
+<div class="references">
+  <h2>References</h2>
+  <ol>
+    <li>SFPD Incident Reports — <a href="https://data.sfgov.org" target="_blank" rel="noopener">data.sfgov.org</a></li>
+    <li>California Engine Immobilizer Law (AB 1046) — <a href="https://leginfo.legislature.ca.gov" target="_blank" rel="noopener">leginfo.legislature.ca.gov</a></li>
+    <li>Pew Research Center, Smartphone Ownership — <a href="https://pewresearch.org" target="_blank" rel="noopener">pewresearch.org</a></li>
+    <li>Apple Activation Lock — <a href="https://support.apple.com" target="_blank" rel="noopener">support.apple.com</a></li>
+    <li>BBC, online adult content economics — <a href="https://bbc.com" target="_blank" rel="noopener">bbc.com</a></li>
+    <li>FOSTA-SESTA — <a href="https://congress.gov" target="_blank" rel="noopener">congress.gov</a></li>
+    <li>Backpage shutdown — <a href="https://fbi.gov" target="_blank" rel="noopener">fbi.gov</a></li>
+    <li>Activation Lock reduces SF iPhone theft 40% — iMore</li>
+    <li>Silk Road — <a href="https://britannica.com" target="_blank" rel="noopener">britannica.com</a></li>
+    <li>Zelle fraud — NY Attorney General</li>
+    <li>OnlyFans — Wikipedia</li>
+  </ol>
+</div>
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════════ -->
+<footer>
+  SF Crime Data Story &nbsp;·&nbsp; 2003–2024 SFPD Incident Reports &nbsp;·&nbsp; Built with Python · Plotly · Folium
+</footer>
+
+</body>
+</html>
