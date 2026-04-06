@@ -1,10 +1,663 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Data Viz Site</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>When Technology Changed Crime — SF Crime Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+ 
+  <style>
+    :root {
+      --ink:       #1a1612;
+      --paper:     #f5f0e8;
+      --paper-alt: #ede7d9;
+      --rule:      #c8bfad;
+      --faint:     #e4ddd0;
+      --blue:      #1d6fa4;
+      --orange:    #c85a17;
+      --purple:    #7b3fa0;
+      --accent:    #b5271a;
+      --caption:   #6b6055;
+      --text-col:  330px;
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+ 
+    /* MASTHEAD */
+    .masthead {
+      border-bottom: 3px double var(--ink);
+      padding: 1.2rem 2rem 0.8rem;
+      text-align: center;
+    }
+    .masthead .pub-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--caption);
+    }
+    .masthead .pub-rule {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0.4rem 0;
+    }
+    .masthead .pub-rule hr { flex: 1; border: none; border-top: 1px solid var(--ink); }
+    .masthead .pub-rule span {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+    }
+    .masthead .pub-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      color: var(--caption);
+    }
+ 
+    /* HERO */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 2rem 3rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero .kicker {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      max-width: 760px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero .deck {
+      margin-top: 1.4rem;
+      font-size: 1.1rem;
+      line-height: 1.65;
+      max-width: 580px;
+      color: #3a3028;
+      font-weight: 300;
+    }
+    .hero-meta {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      color: var(--caption);
+      text-transform: uppercase;
+    }
+    .hero-meta .dot { color: var(--rule); }
+ 
+    /* INTRO PROSE */
+    .intro-prose {
+      max-width: 660px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+    .intro-prose p { margin-bottom: 1.3rem; }
+    .intro-prose p:first-child::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--accent);
+      float: left;
+      line-height: 0.75;
+      margin: 0.12em 0.1em 0 0;
+      padding-top: 0.06em;
+    }
+ 
+    /* CHAPTER BREAK */
+    .chapter-break {
+      max-width: 1200px;
+      margin: 4rem auto 0;
+      padding: 1.2rem 2rem 0;
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      border-top: 3px solid var(--ink);
+    }
+    .chapter-break .ch-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--paper-alt);
+      -webkit-text-stroke: 2px var(--ink);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .chapter-break .ch-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+ 
+    /* SPLIT PANEL — the core layout */
+    .split-panel {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      display: grid;
+      grid-template-columns: var(--text-col) 1fr;
+      gap: 3rem;
+      align-items: start;
+      border-bottom: 1px solid var(--faint);
+    }
+    .split-panel .panel-text {
+      position: sticky;
+      top: 2rem;
+    }
+ 
+    .panel-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid currentColor;
+    }
+    .panel-text h3.mv  { color: var(--blue);   border-color: var(--blue);   }
+    .panel-text h3.lt  { color: var(--orange); border-color: var(--orange); }
+    .panel-text h3.sp  { color: var(--purple); border-color: var(--purple); }
+    .panel-text h3.neutral { color: var(--ink); border-color: var(--rule); }
+ 
+    .panel-text p {
+      font-size: 0.93rem;
+      line-height: 1.72;
+      margin-bottom: 1rem;
+    }
+ 
+    /* FIGURE */
+    .figure-block {
+      background: var(--paper-alt);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .figure-block img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .figure-block iframe {
+      width: 100%;
+      border: none;
+      display: block;
+    }
+    .fig-caption {
+      padding: 0.75rem 1.2rem 1rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.77rem;
+      line-height: 1.55;
+      color: var(--caption);
+    }
+    .fig-caption strong {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+ 
+    /* PULL QUOTE */
+    .pull-quote {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    .pull-quote blockquote {
+      border-left: 5px solid var(--accent);
+      padding: 0.5rem 0 0.5rem 1.8rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1.45;
+    }
+ 
+    /* COLOR KEY */
+    .color-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0 1.4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+    }
+    .color-key .k { display: flex; align-items: center; gap: 0.45rem; }
+    .color-key .swatch { width: 24px; height: 4px; border-radius: 2px; }
+    .sw-blue   { background: var(--blue); }
+    .sw-orange { background: var(--orange); }
+    .sw-purple { background: var(--purple); }
+ 
+    /* ANNOTATION */
+    .annotation {
+      background: white;
+      border-left: 3px solid var(--ink);
+      padding: 0.7rem 0.9rem;
+      margin: 1.2rem 0;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    .annotation .ann-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--caption);
+      margin-bottom: 0.25rem;
+    }
+ 
+    /* MAP TABS */
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--rule);
+      background: var(--paper-alt);
+      padding: 0 0.8rem;
+    }
+    .tab-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.6rem 0.9rem;
+      border: none;
+      background: transparent;
+      color: var(--caption);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+ 
+    /* REFERENCES */
+    .references {
+      max-width: 660px;
+      margin: 4rem auto 0;
+      padding: 2rem 2rem 4rem;
+      border-top: 3px double var(--rule);
+    }
+    .references h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--caption);
+      margin-bottom: 1.2rem;
+    }
+    .references ol { padding-left: 1.4rem; }
+    .references li {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      margin-bottom: 0.55rem;
+      color: var(--caption);
+    }
+    .references a { color: var(--blue); text-decoration: none; }
+    .references a:hover { text-decoration: underline; }
+ 
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+    }
+ 
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+      .split-panel {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .split-panel .panel-text { position: static; }
+      .hero h1 { font-size: 2rem; }
+      .chapter-break .ch-num { font-size: 2rem; }
+    }
+ 
+    /* FADE IN */
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .hero        { animation: fadein 0.6s ease both; }
+    .intro-prose { animation: fadein 0.7s 0.1s ease both; }
+  </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>This site will soon contain interactive data visualizations about crime in San Francisco.</p>
+ 
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="pub-name">SF Crime · Data Story · Week 8</div>
+  <div class="pub-rule">
+    <hr />
+    <span>San Francisco Police Incident Reports &nbsp;·&nbsp; 2003 – 2024</span>
+    <hr />
+  </div>
+  <div class="pub-meta">Data source: data.sfgov.org &nbsp;·&nbsp; Analysis: Python · Plotly · Folium</div>
+</header>
+ 
+<!-- HERO -->
+<section class="hero">
+  <p class="kicker">Technology &amp; Crime &nbsp;·&nbsp; Twenty Years of Data</p>
+  <h1>When the Machine<br /><em>Changed the Crime</em></h1>
+  <p class="deck">
+    Three of the sharpest shifts in San Francisco crime over two decades
+    were not driven by policing. They were driven by technology — an engine
+    chip, a smartphone, a law aimed at a website.
+  </p>
+  <div class="hero-meta">
+    <span>2003 – 2024</span>
+    <span class="dot">·</span>
+    <span>SFPD Incident Reports</span>
+    <span class="dot">·</span>
+    <span>~3 million incidents</span>
+  </div>
+</section>
+ 
+<!-- INTRODUCTION -->
+<div class="intro-prose">
+  <p>
+    This page analyses crime data from San Francisco covering the period
+    between 2003 and 2024. The dataset is based on SFPD police incident
+    reports and contains detailed information on each recorded incident:
+    crime type, location, date, time, and more. It is worth noting upfront
+    that this data reflects reported incidents only — changes in enforcement
+    priorities or reporting behaviour can look exactly like changes in crime
+    itself, and that distinction will matter a great deal by the end of this
+    story.
+  </p>
+  <p>
+    After working through this data, I noticed that three of the sharpest
+    shifts across two decades share something unexpected: they appear to be
+    driven by technological change. The crimes I will focus on are
+    <strong style="color:var(--blue);">motor vehicle theft</strong>,
+    <strong style="color:var(--orange);">larceny theft</strong>, and
+    <strong style="color:var(--purple);">street prostitution</strong>.
+    In the final chapter I expand the view to show more crime types
+    alongside other technology-related events, so you can look for
+    connections I may have missed.
+  </p>
+  <div class="color-key">
+    <span class="k"><span class="swatch sw-blue"></span>Motor vehicle theft</span>
+    <span class="k"><span class="swatch sw-orange"></span>Larceny theft</span>
+    <span class="k"><span class="swatch sw-purple"></span>Street prostitution</span>
+  </div>
+</div>
+ 
+<!-- CHAPTER 1 -->
+<div class="chapter-break">
+  <span class="ch-num">01</span>
+  <span class="ch-title">Three Crimes, Three Technologies</span>
+</div>
+ 
+<div class="split-panel">
+  <div class="panel-text">
+    <h3 class="mv">Motor Vehicle Theft</h3>
+    <p>
+      California's 2005 law required all new cars to include engine
+      immobilizers — a chip that prevents the engine starting without the
+      correct electronic key, making hotwiring essentially obsolete.
+      The drop in the data begins almost immediately.
+    </p>
+    <p>
+      Some of the remaining thefts are likely older vehicles without this
+      system. It is also worth noting that the law was only possible because
+      the technology already existed and had been standardised — the
+      legislation was the trigger, not the invention.
+    </p>
+ 
+    <h3 class="lt" style="margin-top:1.8rem;">Larceny Theft</h3>
+    <p>
+      Roughly the opposite happened here. Smartphones crossed 50% US
+      penetration around 2011–2012, placing a high-value, pocket-sized
+      device in almost everyone's hands — with limited tracking or resale
+      prevention at the time. Apple's Activation Lock (iOS 7, 2013) was
+      a partial countermeasure, but users found workarounds regularly.
+      Then COVID-19 emptied the streets in 2020.
+    </p>
+ 
+    <h3 class="sp" style="margin-top:1.8rem;">Street Prostitution</h3>
+    <p>
+      The drop begins earlier than the enforcement laws often cited.
+      Around 2011, free content platforms began to dominate — with 80–90%
+      of users accessing content at no cost — and the early decline is
+      consistent with that shift in demand.
+    </p>
+    <p>
+      Then in 2018, FOSTA-SESTA targeted platforms hosting sex work
+      advertising. Incidents fell to near zero. But this almost certainly
+      does not mean the activity disappeared — it means it became invisible
+      to the data.
+    </p>
+  </div>
+ 
+  <div class="panel-viz">
+    <div class="figure-block">
+      <img
+        src="visualizations/viz1_tech_crime.png"
+        alt="Three-panel chart showing annual incident counts for motor vehicle theft, larceny theft, and street prostitution in San Francisco 2003–2024 with dashed vertical lines marking key technology events"
+      />
+      <div class="fig-caption">
+        <strong>Figure 1 — Annual incident counts, 2003–2024</strong>
+        Annual incident counts for motor vehicle theft (blue), larceny theft (orange),
+        and street prostitution (purple). Dashed lines mark the technology moment
+        linked to each shift. The y-axes are intentionally independent — larceny reaches
+        50,000 incidents/year while prostitution peaks below 2,000, so read the
+        shapes and turning points, not the absolute heights, when comparing across panels.
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- Pull quote -->
+<div class="pull-quote">
+  <blockquote>
+    "The data does not show a crime going away.<br />
+    It shows a crime becoming invisible."
+  </blockquote>
+</div>
+ 
+<!-- CHAPTER 2 -->
+<div class="chapter-break">
+  <span class="ch-num">02</span>
+  <span class="ch-title">Does Technology Affect All Neighbourhoods Equally?</span>
+</div>
+ 
+<div class="split-panel">
+  <div class="panel-text">
+    <h3 class="neutral">District Ratios</h3>
+    <p>
+      The previous chapter showed how technology changed total crime numbers
+      across San Francisco. Here I want to ask whether those changes were
+      felt equally across districts — and whether income level played a role
+      in who benefited from the new protections.
+    </p>
+    <p>
+      Each map shows the ratio of each crime per district compared to the
+      city-wide average. <strong>Red (ratio &gt; 1)</strong> means that
+      district is overrepresented. <strong>Blue (ratio &lt; 1)</strong> means
+      the opposite. Use the animation controls to watch how ratios shift, and
+      the tabs above each map to switch between crime types.
+    </p>
+ 
+    <div class="annotation">
+      <div class="ann-label">What to look for</div>
+      In the motor vehicle theft map, watch the <strong>Mission district</strong>.
+      Even as the overall count falls city-wide, its ratio rises — suggesting
+      that newer security technology was adopted faster in areas with newer
+      cars, concentrating the remaining theft where older vehicles were still common.
+    </div>
+ 
+    <p>
+      For larceny, theft is more evenly spread and in some cases higher in
+      wealthier districts — which makes sense since richer areas have more
+      valuable assets and more foot traffic in public spaces.
+    </p>
+ 
+    <div class="annotation">
+      <div class="ann-label">A note on interpretation</div>
+      Technologies like smartphones were broadly accessible across income levels.
+      But car security technology depends on whether you own a newer vehicle —
+      a different story. The Mission ratios are consistent with that hypothesis,
+      even if the data alone cannot confirm it.
+    </div>
+  </div>
+ 
+  <div class="panel-viz">
+    <div class="figure-block">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="showTab('mvt', this)">Motor Vehicle Theft</button>
+        <button class="tab-btn" onclick="showTab('larceny', this)">Larceny</button>
+        <button class="tab-btn" onclick="showTab('prostitution', this)">Street Prostitution</button>
+      </div>
+ 
+      <div id="tab-mvt" class="tab-panel active">
+        <iframe src="visualizations/viz2a_mvt_ratio.html" height="500"
+          title="Animated choropleth: motor vehicle theft ratio by district" loading="lazy"></iframe>
+      </div>
+      <div id="tab-larceny" class="tab-panel">
+        <iframe src="visualizations/viz2b_larceny_ratio.html" height="500"
+          title="Animated choropleth: larceny theft ratio by district" loading="lazy"></iframe>
+      </div>
+      <div id="tab-prostitution" class="tab-panel">
+        <iframe src="visualizations/viz2c_prostitution_ratio.html" height="500"
+          title="Animated choropleth: street prostitution ratio by district" loading="lazy"></iframe>
+      </div>
+ 
+      <div class="fig-caption">
+        <strong>Figure 2 — Crime ratio per district vs. city average, animated by year</strong>
+        Red districts are overrepresented relative to the city average; blue are
+        underrepresented. Use the animation controls to watch ratios evolve over time.
+        The motor vehicle theft map is the most revealing: the overall count falls,
+        but some districts become relatively worse — not because crime rose there,
+        but because it fell faster everywhere else.
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- CHAPTER 3 -->
+<div class="chapter-break">
+  <span class="ch-num">03</span>
+  <span class="ch-title">Look for Yourself</span>
+</div>
+ 
+<div class="split-panel">
+  <div class="panel-text">
+    <h3 class="neutral">Explore</h3>
+    <p>
+      In this final chapter I want to hand the exploration over to you.
+      The chart shows how several crime types have evolved over time,
+      alongside technology events I believe are plausibly connected.
+    </p>
+    <p>
+      Click any crime in the legend to show or hide it. Use the dropdown
+      to overlay a technology event. Some events connect to more than one
+      crime line — the connections are yours to find.
+    </p>
+    <p>
+      I have put forward the connections I found most compelling, but there
+      are certainly others. You might even think of an event I have not
+      included and notice it aligns with something in the data. That is
+      kind of the point.
+    </p>
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--rule);">
+      <p style="font-style:italic; font-size:0.88rem; color:#3a3028; margin-bottom:1rem;">
+        My own reflection: technology can have a significant and direct impact
+        on crime in both directions. Some inventions create new opportunities
+        while others close them off, and both effects tend to persist until
+        some response catches up — whether a security measure, a law, or
+        something as blunt as a pandemic.
+      </p>
+      <p style="font-style:italic; font-size:0.88rem; color:#3a3028;">
+        Artificial intelligence is the obvious next case. Have the people
+        building these systems thought seriously about the consequences?
+        Or are they focused on the revenue?
+      </p>
+    </div>
+  </div>
+ 
+  <div class="panel-viz">
+    <div class="figure-block">
+      <iframe src="visualizations/viz3_tech_events.html" height="560"
+        title="Interactive crime explorer with technology event overlays"></iframe>
+      <div class="fig-caption">
+        <strong>Figure 3 — Eight crime categories, 2003–2022, with technology overlays</strong>
+        Click any crime in the legend to show or hide it. Use the dropdown to overlay
+        a technology event on the timeline. The overlays are the connections I found
+        most compelling — but the chart is yours to explore. The author's
+        interpretation here is a starting point, not a conclusion.
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- REFERENCES -->
+<div class="references">
+  <h2>References</h2>
+  <ol>
+    <li>SFPD Incident Reports — <a href="https://data.sfgov.org" target="_blank" rel="noopener">data.sfgov.org</a></li>
+    <li>California Engine Immobilizer Law (AB 1046) — <a href="https://leginfo.legislature.ca.gov" target="_blank" rel="noopener">leginfo.legislature.ca.gov</a></li>
+    <li>Pew Research Center, Smartphone Ownership — <a href="https://pewresearch.org" target="_blank" rel="noopener">pewresearch.org</a></li>
+    <li>Apple Activation Lock — <a href="https://support.apple.com" target="_blank" rel="noopener">support.apple.com</a></li>
+    <li>BBC, online adult content economics — <a href="https://bbc.com" target="_blank" rel="noopener">bbc.com</a></li>
+    <li>FOSTA-SESTA — <a href="https://congress.gov" target="_blank" rel="noopener">congress.gov</a></li>
+    <li>Backpage shutdown — <a href="https://fbi.gov" target="_blank" rel="noopener">fbi.gov</a></li>
+    <li>Activation Lock reduces SF iPhone theft 40% — iMore</li>
+    <li>Silk Road — <a href="https://britannica.com" target="_blank" rel="noopener">britannica.com</a></li>
+    <li>Zelle fraud — NY Attorney General</li>
+    <li>OnlyFans — Wikipedia</li>
+  </ol>
+</div>
+ 
+<footer>
+  SF Crime Data Story &nbsp;·&nbsp; 2003–2024 SFPD Incident Reports &nbsp;·&nbsp; Python · Plotly · Folium
+</footer>
+ 
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+ 
 </body>
 </html>
