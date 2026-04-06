@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>When Technology Changed Crime — SF Crime Analysis</title>
+  <title>When Technology Changed Crime: SF Crime Analysis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
+ 
   <style>
     :root {
       --ink:       #1a1612;
@@ -22,10 +22,10 @@
       --caption:   #6b6055;
       --text-col:  330px;
     }
-
+ 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
+ 
     body {
       background: var(--paper);
       color: var(--ink);
@@ -34,7 +34,7 @@
       line-height: 1.75;
       -webkit-font-smoothing: antialiased;
     }
-
+ 
     /* MASTHEAD */
     .masthead {
       border-bottom: 3px double var(--ink);
@@ -66,13 +66,14 @@
       letter-spacing: 0.1em;
       color: var(--caption);
     }
-
+ 
     /* HERO */
     .hero {
       max-width: 900px;
       margin: 0 auto;
       padding: 4rem 2rem 3rem;
       border-bottom: 1px solid var(--rule);
+      text-align: center;
     }
     .hero .kicker {
       font-family: 'DM Mono', monospace;
@@ -89,6 +90,7 @@
       line-height: 1.08;
       letter-spacing: -0.01em;
       max-width: 760px;
+      margin: 0 auto;
     }
     .hero h1 em { font-style: italic; color: var(--accent); }
     .hero .deck {
@@ -98,11 +100,14 @@
       max-width: 580px;
       color: #3a3028;
       font-weight: 300;
+      margin-left: auto;
+      margin-right: auto;
     }
     .hero-meta {
       margin-top: 2rem;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1.5rem;
       font-family: 'DM Mono', monospace;
       font-size: 0.63rem;
@@ -111,7 +116,7 @@
       text-transform: uppercase;
     }
     .hero-meta .dot { color: var(--rule); }
-
+ 
     /* INTRO PROSE */
     .intro-prose {
       max-width: 660px;
@@ -129,7 +134,7 @@
       margin: 0.12em 0.1em 0 0;
       padding-top: 0.06em;
     }
-
+ 
     /* CHAPTER BREAK */
     .chapter-break {
       max-width: 1200px;
@@ -155,7 +160,7 @@
       font-weight: 700;
       line-height: 1.25;
     }
-
+ 
     /* SPLIT PANEL — the core layout */
     .split-panel {
       max-width: 1200px;
@@ -171,7 +176,7 @@
       position: sticky;
       top: 2rem;
     }
-
+ 
     .panel-text h3 {
       font-family: 'Playfair Display', serif;
       font-size: 1.15rem;
@@ -184,13 +189,13 @@
     .panel-text h3.lt  { color: var(--orange); border-color: var(--orange); }
     .panel-text h3.sp  { color: var(--purple); border-color: var(--purple); }
     .panel-text h3.neutral { color: var(--ink); border-color: var(--rule); }
-
+ 
     .panel-text p {
       font-size: 0.93rem;
       line-height: 1.72;
       margin-bottom: 1rem;
     }
-
+ 
     /* FIGURE */
     .figure-block {
       background: var(--paper-alt);
@@ -224,7 +229,76 @@
       display: block;
       margin-bottom: 0.25rem;
     }
-
+ 
+    /* FULL-WIDTH PANEL (chapter 1) */
+    .full-panel {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      border-bottom: 1px solid var(--faint);
+    }
+    .full-panel .figure-block img {
+      width: 100%;
+    }
+    .crime-text-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+    .crime-text-col h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid currentColor;
+    }
+    .crime-text-col h3.mv  { color: var(--blue);   border-color: var(--blue);   }
+    .crime-text-col h3.lt  { color: var(--orange); border-color: var(--orange); }
+    .crime-text-col h3.sp  { color: var(--purple); border-color: var(--purple); }
+    .crime-text-col p {
+      font-size: 0.93rem;
+      line-height: 1.72;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 800px) {
+      .crime-text-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+ 
+    /* BELOW-PANEL ANNOTATIONS (chapter 2) */
+    .below-panel-annotations {
+      max-width: 1200px;
+      margin: 0 auto 0;
+      padding: 1.5rem 2rem 2.5rem;
+      border-bottom: 1px solid var(--faint);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 800px) {
+      .below-panel-annotations { grid-template-columns: 1fr; }
+    }
+ 
+    /* CLOSING REFLECTION */
+    .closing-reflection {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 3rem 3.5rem;
+      border-top: 3px double var(--ink);
+      border-bottom: 3px double var(--ink);
+      text-align: center;
+    }
+    .closing-reflection p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.0rem;
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+    }
+    .closing-reflection p:last-child { margin-bottom: 0; }
+ 
     /* PULL QUOTE */
     .pull-quote {
       max-width: 760px;
@@ -240,7 +314,7 @@
       color: var(--accent);
       line-height: 1.45;
     }
-
+ 
     /* COLOR KEY */
     .color-key {
       display: flex;
@@ -256,7 +330,7 @@
     .sw-blue   { background: var(--blue); }
     .sw-orange { background: var(--orange); }
     .sw-purple { background: var(--purple); }
-
+ 
     /* ANNOTATION */
     .annotation {
       background: white;
@@ -274,7 +348,7 @@
       color: var(--caption);
       margin-bottom: 0.25rem;
     }
-
+ 
     /* MAP TABS */
     .tab-bar {
       display: flex;
@@ -302,7 +376,7 @@
     .tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-
+ 
     /* REFERENCES */
     .references {
       max-width: 660px;
@@ -327,7 +401,7 @@
     }
     .references a { color: var(--blue); text-decoration: none; }
     .references a:hover { text-decoration: underline; }
-
+ 
     /* FOOTER */
     footer {
       background: var(--ink);
@@ -338,7 +412,7 @@
       font-size: 0.6rem;
       letter-spacing: 0.12em;
     }
-
+ 
     /* RESPONSIVE */
     @media (max-width: 800px) {
       .split-panel {
@@ -349,7 +423,7 @@
       .hero h1 { font-size: 2rem; }
       .chapter-break .ch-num { font-size: 2rem; }
     }
-
+ 
     /* FADE IN */
     @keyframes fadein {
       from { opacity: 0; transform: translateY(12px); }
@@ -360,25 +434,25 @@
   </style>
 </head>
 <body>
-
+ 
 <!-- MASTHEAD -->
 <header class="masthead">
   <div class="pub-name">SF Crime · Data Story · Week 8</div>
   <div class="pub-rule">
     <hr />
-    <span>San Francisco Police Incident Reports &nbsp;·&nbsp; 2003 – 2024</span>
+    <span>San Francisco Police Incident Reports &nbsp;·&nbsp; 2003 to 2024</span>
     <hr />
   </div>
   <div class="pub-meta">Data source: data.sfgov.org &nbsp;·&nbsp; Analysis: Python · Plotly · Folium</div>
 </header>
-
+ 
 <!-- HERO -->
 <section class="hero">
   <p class="kicker">Technology &amp; Crime &nbsp;·&nbsp; Twenty Years of Data</p>
   <h1>When the Machine<br /><em>Changed the Crime</em></h1>
   <p class="deck">
     Three of the sharpest shifts in San Francisco crime over two decades
-    were not driven by policing. They were driven by technology — an engine
+    were not driven by policing. They were driven by technology: an engine
     chip, a smartphone, a law aimed at a website.
   </p>
   <div class="hero-meta">
@@ -389,29 +463,26 @@
     <span>~3 million incidents</span>
   </div>
 </section>
-
+ 
 <!-- INTRODUCTION -->
 <div class="intro-prose">
   <p>
-    This page analyses crime data from San Francisco covering the period
-    between 2003 and 2024. The dataset is based on SFPD police incident
-    reports and contains detailed information on each recorded incident:
-    crime type, location, date, time, and more. It is worth noting upfront
-    that this data reflects reported incidents only — changes in enforcement
-    priorities or reporting behaviour can look exactly like changes in crime
-    itself, and that distinction will matter a great deal by the end of this
-    story.
+    This page analyzes crime data from San Francisco covering the period between 2003 and 2024.
+    The dataset is based on SFPD police incident reports and contains detailed information on
+    each recorded incident: crime type, location, date, time, and more. It is worth noting
+    upfront that this data reflects reported incidents only, meaning that changes in enforcement
+    priorities or reporting behaviour can look exactly like changes in crime itself.
   </p>
   <p>
-    After working through this data, I noticed that three of the sharpest
-    shifts across two decades share something unexpected: they appear to be
-    driven by technological change. The crimes I will focus on are
+    After working through this data, I noticed that three of the sharpest shifts across two
+    decades share something unexpected: they appear to be driven by technological change. The
+    crimes I will focus on are
     <strong style="color:var(--blue);">motor vehicle theft</strong>,
     <strong style="color:var(--orange);">larceny theft</strong>, and
     <strong style="color:var(--purple);">street prostitution</strong>.
-    In the final chapter I expand the view to show more crime types
-    alongside other technology-related events, so you can look for
-    connections I may have missed.
+    In the final section, I expand the view to show more crime types alongside other
+    technology-related events, so you can explore the data yourself and look for connections
+    I may have missed.
   </p>
   <div class="color-key">
     <span class="k"><span class="swatch sw-blue"></span>Motor vehicle theft</span>
@@ -419,126 +490,120 @@
     <span class="k"><span class="swatch sw-purple"></span>Street prostitution</span>
   </div>
 </div>
-
+ 
 <!-- CHAPTER 1 -->
 <div class="chapter-break">
   <span class="ch-num">01</span>
   <span class="ch-title">Three Crimes, Three Technologies</span>
 </div>
-
-<div class="split-panel">
-  <div class="panel-text">
-    <h3 class="mv">Motor Vehicle Theft</h3>
-    <p>
-      California's 2005 law required all new cars to include engine
-      immobilizers — a chip that prevents the engine starting without the
-      correct electronic key, making hotwiring essentially obsolete.
-      The drop in the data begins almost immediately.
-    </p>
-    <p>
-      Some of the remaining thefts are likely older vehicles without this
-      system. It is also worth noting that the law was only possible because
-      the technology already existed and had been standardised — the
-      legislation was the trigger, not the invention.
-    </p>
-
-    <h3 class="lt" style="margin-top:1.8rem;">Larceny Theft</h3>
-    <p>
-      Roughly the opposite happened here. Smartphones crossed 50% US
-      penetration around 2011–2012, placing a high-value, pocket-sized
-      device in almost everyone's hands — with limited tracking or resale
-      prevention at the time. Apple's Activation Lock (iOS 7, 2013) was
-      a partial countermeasure, but users found workarounds regularly.
-      Then COVID-19 emptied the streets in 2020.
-    </p>
-
-    <h3 class="sp" style="margin-top:1.8rem;">Street Prostitution</h3>
-    <p>
-      The drop begins earlier than the enforcement laws often cited.
-      Around 2011, free content platforms began to dominate — with 80–90%
-      of users accessing content at no cost — and the early decline is
-      consistent with that shift in demand.
-    </p>
-    <p>
-      Then in 2018, FOSTA-SESTA targeted platforms hosting sex work
-      advertising. Incidents fell to near zero. But this almost certainly
-      does not mean the activity disappeared — it means it became invisible
-      to the data.
-    </p>
+ 
+<div class="full-panel">
+  <div class="figure-block">
+    <img
+      src="visualizations/viz1_tech_crime.png"
+      alt="Three-panel chart showing annual incident counts for motor vehicle theft, larceny theft, and street prostitution in San Francisco 2003–2024 with dashed vertical lines marking key technology events"
+    />
+    <div class="fig-caption">
+      <strong>Figure 1.</strong> Annual incident counts for motor vehicle theft (blue), larceny theft (orange),
+      and street prostitution (purple) in San Francisco, 2003–2024. Dashed lines mark the technology moment
+      associated with each shift. Each panel tells a different story: a cliff, a mountain, and a slow disappearance.
+    </div>
   </div>
-
-  <div class="panel-viz">
-    <div class="figure-block">
-      <img
-        src="visualizations/viz1_tech_crime.png"
-        alt="Three-panel chart showing annual incident counts for motor vehicle theft, larceny theft, and street prostitution in San Francisco 2003–2024 with dashed vertical lines marking key technology events"
-      />
-      <div class="fig-caption">
-        <strong>Figure 1 — Annual incident counts, 2003–2024</strong>
-        Annual incident counts for motor vehicle theft (blue), larceny theft (orange),
-        and street prostitution (purple). Dashed lines mark the technology moment
-        linked to each shift. The y-axes are intentionally independent — larceny reaches
-        50,000 incidents/year while prostitution peaks below 2,000, so read the
-        shapes and turning points, not the absolute heights, when comparing across panels.
-      </div>
+ 
+  <div class="crime-text-grid">
+    <div class="crime-text-col">
+      <h3 class="mv">Motor Vehicle Theft</h3>
+      <p>
+        Even though engine immobilizers were invented well before 2005, they were not standardised
+        in commercial vehicles until that year. As the data shows, a clear drop begins around
+        2005–2006, when California enforced a law requiring all new cars to include this technology.
+        An immobilizer prevents the engine from starting without the correct electronic key, making
+        the old technique of hotwiring essentially obsolete.
+      </p>
+      <p>
+        What is interesting is that while the law was the direct trigger, without the prior invention
+        and standardisation of the technology it would never have been possible. It is also worth
+        mentioning that some of the remaining thefts are likely older vehicles that did not have this
+        system installed. Depending on whether accessories like radios or wheels are included in this
+        crime category, newer security measures added to modern cars may have also made those forms
+        of theft more difficult, contributing further to the decline.
+      </p>
+    </div>
+ 
+    <div class="crime-text-col">
+      <h3 class="lt">Larceny Theft</h3>
+      <p>
+        With larceny theft, roughly the opposite happened. The standardisation of the smartphone
+        meant that people were constantly carrying a high-value device that was easy to steal, small
+        enough to pocket, and at the time had limited tracking or resale prevention measures. As a
+        result, we can see larceny theft increase dramatically after smartphones crossed 50%
+        penetration in the US around 2011–2012.
+      </p>
+      <p>
+        It is true that larceny covers a broader range of thefts: wallets, purses, laptops, and other
+        personal belongings are all included in these numbers. But given the scale of the rise and how
+        rapidly smartphones became part of everyday life, it is reasonable to argue that they had a
+        significant role in driving this trend. Over time some measures were applied, such as Apple's
+        Activation Lock with iOS 7 in 2013, though users found ways around these fairly regularly,
+        which is likely why the numbers fluctuate rather than drop cleanly. Then COVID-19 in 2020
+        emptied the streets entirely, and the count dropped sharply as there were simply fewer people
+        outside to steal from.
+      </p>
+    </div>
+ 
+    <div class="crime-text-col">
+      <h3 class="sp">Street Prostitution</h3>
+      <p>
+        With street prostitution, the drop begins earlier than the enforcement laws that are often
+        cited. Around 2011, a shift in online content consumption meant that free platforms began to
+        dominate, with 80–90% of users accessing content at no cost. As pornography became easier to
+        access, society felt less need to use prostitution as a means of personal satisfaction, which
+        likely contributed to the early decline visible in the data from around that period.
+      </p>
+      <p>
+        Then in 2018, FOSTA-SESTA was signed into law, targeting platforms that hosted sex work
+        advertising. The effect on recorded street prostitution was dramatic: incidents fell to near
+        zero and have remained there since. The critical point, and the one I think matters most, is
+        that this almost certainly does not mean the activity itself disappeared. What disappeared is
+        what the police could see and count. The data does not show a crime going away, it shows a
+        crime becoming invisible.
+      </p>
     </div>
   </div>
 </div>
-
-<!-- Pull quote -->
-<div class="pull-quote">
-  <blockquote>
-    "The data does not show a crime going away.<br />
-    It shows a crime becoming invisible."
-  </blockquote>
-</div>
-
+ 
 <!-- CHAPTER 2 -->
 <div class="chapter-break">
   <span class="ch-num">02</span>
   <span class="ch-title">Does Technology Affect All Neighbourhoods Equally?</span>
 </div>
-
+ 
 <div class="split-panel">
   <div class="panel-text">
     <h3 class="neutral">District Ratios</h3>
     <p>
-      The previous chapter showed how technology changed total crime numbers
-      across San Francisco. Here I want to ask whether those changes were
-      felt equally across districts — and whether income level played a role
-      in who benefited from the new protections.
+      The previous section showed how technology changed total crime numbers across San Francisco.
+      Here I want to look at whether those changes were felt equally across districts with different
+      income levels and living standards.
     </p>
     <p>
-      Each map shows the ratio of each crime per district compared to the
-      city-wide average. <strong>Red (ratio &gt; 1)</strong> means that
-      district is overrepresented. <strong>Blue (ratio &lt; 1)</strong> means
-      the opposite. Use the animation controls to watch how ratios shift, and
-      the tabs above each map to switch between crime types.
+      One observation stands out in the motor vehicle theft map: even as the overall count drops,
+      the ratio for districts like Mission actually increases. This could suggest that newer security
+      technologies were adopted faster in higher-income districts, where newer cars were more common,
+      while lower-income areas continued using older vehicles without these protections. The technology
+      reduced theft overall, but it may have concentrated what remained in areas with less access to it.
     </p>
-
-    <div class="annotation">
-      <div class="ann-label">What to look for</div>
-      In the motor vehicle theft map, watch the <strong>Mission district</strong>.
-      Even as the overall count falls city-wide, its ratio rises — suggesting
-      that newer security technology was adopted faster in areas with newer
-      cars, concentrating the remaining theft where older vehicles were still common.
-    </div>
-
     <p>
-      For larceny, theft is more evenly spread and in some cases higher in
-      wealthier districts — which makes sense since richer areas have more
-      valuable assets and more foot traffic in public spaces.
+      For larceny, the pattern is different. Theft is more evenly spread and in some cases higher in
+      wealthier districts, which makes sense since richer areas have more valuable assets and more
+      foot traffic.
     </p>
-
-    <div class="annotation">
-      <div class="ann-label">A note on interpretation</div>
-      Technologies like smartphones were broadly accessible across income levels.
-      But car security technology depends on whether you own a newer vehicle —
-      a different story. The Mission ratios are consistent with that hypothesis,
-      even if the data alone cannot confirm it.
-    </div>
+    <p>
+      For prostitution, the concentration tends to stay within the same districts over time, though
+      the specific district that stands out shifts after the platform changes take effect.
+    </p>
   </div>
-
+ 
   <div class="panel-viz">
     <div class="figure-block">
       <div class="tab-bar">
@@ -546,7 +611,7 @@
         <button class="tab-btn" onclick="showTab('larceny', this)">Larceny</button>
         <button class="tab-btn" onclick="showTab('prostitution', this)">Street Prostitution</button>
       </div>
-
+ 
       <div id="tab-mvt" class="tab-panel active">
         <iframe src="visualizations/viz2a_mvt_ratio.html" height="500"
           title="Animated choropleth: motor vehicle theft ratio by district" loading="lazy"></iframe>
@@ -559,97 +624,105 @@
         <iframe src="visualizations/viz2c_prostitution_ratio.html" height="500"
           title="Animated choropleth: street prostitution ratio by district" loading="lazy"></iframe>
       </div>
-
+ 
       <div class="fig-caption">
-        <strong>Figure 2 — Crime ratio per district vs. city average, animated by year</strong>
-        Red districts are overrepresented relative to the city average; blue are
-        underrepresented. Use the animation controls to watch ratios evolve over time.
-        The motor vehicle theft map is the most revealing: the overall count falls,
-        but some districts become relatively worse — not because crime rose there,
-        but because it fell faster everywhere else.
+        <strong>Figure 2.</strong> Animated choropleth maps showing the ratio of each crime per district
+        compared to the city-wide average, by year. A ratio above 1 (red) means that district has a
+        disproportionately higher share of that crime relative to the rest of the city. A ratio below 1
+        (blue) means the opposite. Use the animation controls to watch how these ratios shift over time.
       </div>
     </div>
   </div>
 </div>
-
+ 
+<!-- Chapter 2 annotation below the split panel -->
+<div class="below-panel-annotations">
+  <div class="annotation">
+    <div class="ann-label">A note on interpretation</div>
+    Technologies like smartphones and free content platforms were broadly accessible across income
+    levels, so you would not necessarily expect a clear divide in those cases. But something like
+    car security technology, which depends on whether you own a newer vehicle, is a different story.
+    The ratios in the Mission district are consistent with that hypothesis, even if the data alone
+    cannot confirm it.
+  </div>
+</div>
+ 
 <!-- CHAPTER 3 -->
 <div class="chapter-break">
   <span class="ch-num">03</span>
   <span class="ch-title">Look for Yourself</span>
 </div>
-
+ 
 <div class="split-panel">
   <div class="panel-text">
     <h3 class="neutral">Explore</h3>
     <p>
-      In this final chapter I want to hand the exploration over to you.
-      The chart shows how several crime types have evolved over time,
-      alongside technology events I believe are plausibly connected.
+      In this final section I want to hand the exploration over to you. The chart shows how several
+      crime types have evolved over time, alongside a set of technology events that I believe are
+      plausibly connected to some of the trends. I encourage you to try and find relationships
+      yourself: select a crime, select an event, and see if the timing lines up.
     </p>
     <p>
-      Click any crime in the legend to show or hide it. Use the dropdown
-      to overlay a technology event. Some events connect to more than one
-      crime line — the connections are yours to find.
+      I have put forward the ones I found most compelling, but there are certainly others. You might
+      even think of an event I have not included and notice it seems to align with something in the
+      data. That is kind of the point.
     </p>
-    <p>
-      I have put forward the connections I found most compelling, but there
-      are certainly others. You might even think of an event I have not
-      included and notice it aligns with something in the data. That is
-      kind of the point.
-    </p>
-    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--rule);">
-      <p style="font-style:italic; font-size:0.88rem; color:#3a3028; margin-bottom:1rem;">
-        My own reflection: technology can have a significant and direct impact
-        on crime in both directions. Some inventions create new opportunities
-        while others close them off, and both effects tend to persist until
-        some response catches up — whether a security measure, a law, or
-        something as blunt as a pandemic.
-      </p>
-      <p style="font-style:italic; font-size:0.88rem; color:#3a3028;">
-        Artificial intelligence is the obvious next case. Have the people
-        building these systems thought seriously about the consequences?
-        Or are they focused on the revenue?
-      </p>
-    </div>
   </div>
-
+ 
   <div class="panel-viz">
     <div class="figure-block">
       <iframe src="visualizations/viz3_tech_events.html" height="560"
         title="Interactive crime explorer with technology event overlays"></iframe>
       <div class="fig-caption">
-        <strong>Figure 3 — Eight crime categories, 2003–2022, with technology overlays</strong>
-        Click any crime in the legend to show or hide it. Use the dropdown to overlay
-        a technology event on the timeline. The overlays are the connections I found
-        most compelling — but the chart is yours to explore. The author's
-        interpretation here is a starting point, not a conclusion.
+        <strong>Figure 3.</strong> Annual incident counts for eight crime categories in San Francisco, 2003–2022.
+        Click any crime in the legend to show or hide it. Use the dropdown to overlay a technology event on the
+        chart. Some events connect to more than one crime line, the connections are yours to find.
       </div>
     </div>
   </div>
 </div>
-
+ 
+<!-- Closing reflection -->
+<div class="closing-reflection">
+  <p>
+    Technology can have a significant and direct impact on crime, in both directions. Some inventions
+    create new opportunities for crime while others close them off, and both effects tend to persist
+    until some kind of response catches up: whether that is a security measure, a law, or something
+    as blunt as a pandemic.
+  </p>
+  <p>
+    In a world increasingly shaped by large technology companies whose value depends on new products,
+    it is worth asking whether these companies should be required to consider the potential impact of
+    their inventions on crime before they are standardised. Is that even measurable in advance?
+    Looking at past events and their effects, perhaps it is possible to make some predictions.
+    Artificial intelligence is an obvious case. When powerful tools are made widely accessible, they
+    can be used for investigation and prevention just as easily as they can be used for harm. Have the
+    people building these systems thought seriously about that? Or are they focused on the revenue?
+  </p>
+  <p>
+    I do not have a clean answer to that. But I think looking at what technology has already done to
+    crime in the past gives you enough to form your own.
+  </p>
+</div>
+ 
 <!-- REFERENCES -->
 <div class="references">
   <h2>References</h2>
   <ol>
-    <li>SFPD Incident Reports — <a href="https://data.sfgov.org" target="_blank" rel="noopener">data.sfgov.org</a></li>
-    <li>California Engine Immobilizer Law (AB 1046) — <a href="https://leginfo.legislature.ca.gov" target="_blank" rel="noopener">leginfo.legislature.ca.gov</a></li>
-    <li>Pew Research Center, Smartphone Ownership — <a href="https://pewresearch.org" target="_blank" rel="noopener">pewresearch.org</a></li>
-    <li>Apple Activation Lock — <a href="https://support.apple.com" target="_blank" rel="noopener">support.apple.com</a></li>
-    <li>BBC, online adult content economics — <a href="https://bbc.com" target="_blank" rel="noopener">bbc.com</a></li>
-    <li>FOSTA-SESTA — <a href="https://congress.gov" target="_blank" rel="noopener">congress.gov</a></li>
-    <li>Backpage shutdown — <a href="https://fbi.gov" target="_blank" rel="noopener">fbi.gov</a></li>
-    <li>Activation Lock reduces SF iPhone theft 40% — iMore</li>
-    <li>Silk Road — <a href="https://britannica.com" target="_blank" rel="noopener">britannica.com</a></li>
-    <li>Zelle fraud — NY Attorney General</li>
-    <li>OnlyFans — Wikipedia</li>
+    <li>SFPD Incident Reports. <a href="https://data.sfgov.org" target="_blank" rel="noopener">data.sfgov.org</a></li>
+    <li>California Engine Immobilizer Law (AB 1046). <a href="https://leginfo.legislature.ca.gov" target="_blank" rel="noopener">leginfo.legislature.ca.gov</a></li>
+    <li>Pew Research Center, Smartphone Ownership Over Time. <a href="https://pewresearch.org" target="_blank" rel="noopener">pewresearch.org</a></li>
+    <li>Apple iOS 7 and Activation Lock. <a href="https://support.apple.com" target="_blank" rel="noopener">support.apple.com</a></li>
+    <li>BBC News, The economics of online adult content. <a href="https://bbc.com" target="_blank" rel="noopener">bbc.com</a></li>
+    <li>FOSTA-SESTA (Allow States and Victims to Fight Online Sex Trafficking Act). <a href="https://congress.gov" target="_blank" rel="noopener">congress.gov</a></li>
+    <li>Campedelli, Petapart and Piza, COVID-19 and street crime in US cities. <a href="https://journals.sagepub.com" target="_blank" rel="noopener">journals.sagepub.com</a></li>
   </ol>
 </div>
-
+ 
 <footer>
   SF Crime Data Story &nbsp;·&nbsp; 2003–2024 SFPD Incident Reports &nbsp;·&nbsp; Python · Plotly · Folium
 </footer>
-
+ 
 <script>
   function showTab(name, btn) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -658,6 +731,6 @@
     btn.classList.add('active');
   }
 </script>
-
+ 
 </body>
 </html>
