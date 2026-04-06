@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
- 
+
   <style>
     :root {
       --ink:       #1a1612;
@@ -22,10 +22,10 @@
       --caption:   #6b6055;
       --text-col:  330px;
     }
- 
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
- 
+
     body {
       background: var(--paper);
       color: var(--ink);
@@ -34,7 +34,7 @@
       line-height: 1.75;
       -webkit-font-smoothing: antialiased;
     }
- 
+
     /* MASTHEAD */
     .masthead {
       border-bottom: 3px double var(--ink);
@@ -66,7 +66,7 @@
       letter-spacing: 0.1em;
       color: var(--caption);
     }
- 
+
     /* HERO */
     .hero {
       max-width: 900px;
@@ -111,7 +111,7 @@
       text-transform: uppercase;
     }
     .hero-meta .dot { color: var(--rule); }
- 
+
     /* INTRO PROSE */
     .intro-prose {
       max-width: 660px;
@@ -129,7 +129,7 @@
       margin: 0.12em 0.1em 0 0;
       padding-top: 0.06em;
     }
- 
+
     /* CHAPTER BREAK */
     .chapter-break {
       max-width: 1200px;
@@ -155,7 +155,7 @@
       font-weight: 700;
       line-height: 1.25;
     }
- 
+
     /* SPLIT PANEL — the core layout */
     .split-panel {
       max-width: 1200px;
@@ -171,7 +171,7 @@
       position: sticky;
       top: 2rem;
     }
- 
+
     .panel-text h3 {
       font-family: 'Playfair Display', serif;
       font-size: 1.15rem;
@@ -184,13 +184,13 @@
     .panel-text h3.lt  { color: var(--orange); border-color: var(--orange); }
     .panel-text h3.sp  { color: var(--purple); border-color: var(--purple); }
     .panel-text h3.neutral { color: var(--ink); border-color: var(--rule); }
- 
+
     .panel-text p {
       font-size: 0.93rem;
       line-height: 1.72;
       margin-bottom: 1rem;
     }
- 
+
     /* FIGURE */
     .figure-block {
       background: var(--paper-alt);
@@ -224,7 +224,7 @@
       display: block;
       margin-bottom: 0.25rem;
     }
- 
+
     /* PULL QUOTE */
     .pull-quote {
       max-width: 760px;
@@ -240,7 +240,7 @@
       color: var(--accent);
       line-height: 1.45;
     }
- 
+
     /* COLOR KEY */
     .color-key {
       display: flex;
@@ -256,7 +256,7 @@
     .sw-blue   { background: var(--blue); }
     .sw-orange { background: var(--orange); }
     .sw-purple { background: var(--purple); }
- 
+
     /* ANNOTATION */
     .annotation {
       background: white;
@@ -274,7 +274,7 @@
       color: var(--caption);
       margin-bottom: 0.25rem;
     }
- 
+
     /* MAP TABS */
     .tab-bar {
       display: flex;
@@ -302,7 +302,7 @@
     .tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
- 
+
     /* REFERENCES */
     .references {
       max-width: 660px;
@@ -327,7 +327,7 @@
     }
     .references a { color: var(--blue); text-decoration: none; }
     .references a:hover { text-decoration: underline; }
- 
+
     /* FOOTER */
     footer {
       background: var(--ink);
@@ -338,7 +338,7 @@
       font-size: 0.6rem;
       letter-spacing: 0.12em;
     }
- 
+
     /* RESPONSIVE */
     @media (max-width: 800px) {
       .split-panel {
@@ -349,7 +349,7 @@
       .hero h1 { font-size: 2rem; }
       .chapter-break .ch-num { font-size: 2rem; }
     }
- 
+
     /* FADE IN */
     @keyframes fadein {
       from { opacity: 0; transform: translateY(12px); }
@@ -360,7 +360,7 @@
   </style>
 </head>
 <body>
- 
+
 <!-- MASTHEAD -->
 <header class="masthead">
   <div class="pub-name">SF Crime · Data Story · Week 8</div>
@@ -371,7 +371,7 @@
   </div>
   <div class="pub-meta">Data source: data.sfgov.org &nbsp;·&nbsp; Analysis: Python · Plotly · Folium</div>
 </header>
- 
+
 <!-- HERO -->
 <section class="hero">
   <p class="kicker">Technology &amp; Crime &nbsp;·&nbsp; Twenty Years of Data</p>
@@ -389,7 +389,7 @@
     <span>~3 million incidents</span>
   </div>
 </section>
- 
+
 <!-- INTRODUCTION -->
 <div class="intro-prose">
   <p>
@@ -419,13 +419,13 @@
     <span class="k"><span class="swatch sw-purple"></span>Street prostitution</span>
   </div>
 </div>
- 
+
 <!-- CHAPTER 1 -->
 <div class="chapter-break">
   <span class="ch-num">01</span>
   <span class="ch-title">Three Crimes, Three Technologies</span>
 </div>
- 
+
 <div class="split-panel">
   <div class="panel-text">
     <h3 class="mv">Motor Vehicle Theft</h3>
@@ -441,7 +441,7 @@
       the technology already existed and had been standardised — the
       legislation was the trigger, not the invention.
     </p>
- 
+
     <h3 class="lt" style="margin-top:1.8rem;">Larceny Theft</h3>
     <p>
       Roughly the opposite happened here. Smartphones crossed 50% US
@@ -451,7 +451,7 @@
       a partial countermeasure, but users found workarounds regularly.
       Then COVID-19 emptied the streets in 2020.
     </p>
- 
+
     <h3 class="sp" style="margin-top:1.8rem;">Street Prostitution</h3>
     <p>
       The drop begins earlier than the enforcement laws often cited.
@@ -466,7 +466,7 @@
       to the data.
     </p>
   </div>
- 
+
   <div class="panel-viz">
     <div class="figure-block">
       <img
@@ -484,7 +484,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- Pull quote -->
 <div class="pull-quote">
   <blockquote>
@@ -492,13 +492,13 @@
     It shows a crime becoming invisible."
   </blockquote>
 </div>
- 
+
 <!-- CHAPTER 2 -->
 <div class="chapter-break">
   <span class="ch-num">02</span>
   <span class="ch-title">Does Technology Affect All Neighbourhoods Equally?</span>
 </div>
- 
+
 <div class="split-panel">
   <div class="panel-text">
     <h3 class="neutral">District Ratios</h3>
@@ -515,7 +515,7 @@
       the opposite. Use the animation controls to watch how ratios shift, and
       the tabs above each map to switch between crime types.
     </p>
- 
+
     <div class="annotation">
       <div class="ann-label">What to look for</div>
       In the motor vehicle theft map, watch the <strong>Mission district</strong>.
@@ -523,13 +523,13 @@
       that newer security technology was adopted faster in areas with newer
       cars, concentrating the remaining theft where older vehicles were still common.
     </div>
- 
+
     <p>
       For larceny, theft is more evenly spread and in some cases higher in
       wealthier districts — which makes sense since richer areas have more
       valuable assets and more foot traffic in public spaces.
     </p>
- 
+
     <div class="annotation">
       <div class="ann-label">A note on interpretation</div>
       Technologies like smartphones were broadly accessible across income levels.
@@ -538,7 +538,7 @@
       even if the data alone cannot confirm it.
     </div>
   </div>
- 
+
   <div class="panel-viz">
     <div class="figure-block">
       <div class="tab-bar">
@@ -546,7 +546,7 @@
         <button class="tab-btn" onclick="showTab('larceny', this)">Larceny</button>
         <button class="tab-btn" onclick="showTab('prostitution', this)">Street Prostitution</button>
       </div>
- 
+
       <div id="tab-mvt" class="tab-panel active">
         <iframe src="visualizations/viz2a_mvt_ratio.html" height="500"
           title="Animated choropleth: motor vehicle theft ratio by district" loading="lazy"></iframe>
@@ -559,7 +559,7 @@
         <iframe src="visualizations/viz2c_prostitution_ratio.html" height="500"
           title="Animated choropleth: street prostitution ratio by district" loading="lazy"></iframe>
       </div>
- 
+
       <div class="fig-caption">
         <strong>Figure 2 — Crime ratio per district vs. city average, animated by year</strong>
         Red districts are overrepresented relative to the city average; blue are
@@ -571,13 +571,13 @@
     </div>
   </div>
 </div>
- 
+
 <!-- CHAPTER 3 -->
 <div class="chapter-break">
   <span class="ch-num">03</span>
   <span class="ch-title">Look for Yourself</span>
 </div>
- 
+
 <div class="split-panel">
   <div class="panel-text">
     <h3 class="neutral">Explore</h3>
@@ -612,7 +612,7 @@
       </p>
     </div>
   </div>
- 
+
   <div class="panel-viz">
     <div class="figure-block">
       <iframe src="visualizations/viz3_tech_events.html" height="560"
@@ -627,7 +627,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- REFERENCES -->
 <div class="references">
   <h2>References</h2>
@@ -645,11 +645,11 @@
     <li>OnlyFans — Wikipedia</li>
   </ol>
 </div>
- 
+
 <footer>
   SF Crime Data Story &nbsp;·&nbsp; 2003–2024 SFPD Incident Reports &nbsp;·&nbsp; Python · Plotly · Folium
 </footer>
- 
+
 <script>
   function showTab(name, btn) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -658,6 +658,6 @@
     btn.classList.add('active');
   }
 </script>
- 
+
 </body>
 </html>
